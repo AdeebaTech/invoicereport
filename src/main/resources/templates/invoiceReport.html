@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+            name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Thymeleaf Form handling Demo</title>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"
+          rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="background-color: #f0f1f2">
+<div th:replace="fragments/header :: header"></div>
+<div class="container-fluid">
+
+
+<form class="col card p-3 mb-5 container" method="get" th:action="@{/invoiceReport}" th:object="${report}">
+    <div class="form-row">
+        <div class="col-md-6 form-group">
+            <label class="col-form-label">Customer Name</label>
+            <select class="form-control" id="customerName"   name="customerName"  onChange="check()">
+                <option value="0">select option</option>
+                <option th:each="cusName : ${customerList}"
+                           th:value="${cusName.order_date}" th:text="${cusName.customer_name} "required="required"></option>
+            </select>
+        </div>
+
+        <div class="col-md-6 form-group">
+            <label class="col-form-label">Order Date</label>
+            <input type="text" class="form-control"  name="order_date" id="order_date"  >
+
+       </div>
+
+
+        <div class="text-center">
+            <button type="submit" name="action" value="show">Generate PDF</button>
+
+<!--            <input type="submit" value="Show product Details" class="btn btn-primary btn-sm mr-2" />-->
+<!--            <input type="button" value="Generate PDF"  class="btn btn-primary btn-sm mr-2" />-->
+        </div>
+
+    </div>
+
+
+</form>
+<div th:replace="fragments/footer :: footer"></div>
+</div>
+
+<script>
+ function check() {
+     document.getElementById("order_date").value=document.getElementById("customerName").value;
+    }
+ </script>
+</body>
+</html>

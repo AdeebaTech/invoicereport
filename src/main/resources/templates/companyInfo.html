@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+  <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="background-color: #f0f1f2">
+<div th:replace="fragments/header :: header"></div>
+
+    <!-- form -->
+    <form id="form" class="container col card p-3 mb-5">
+        <div class="form-row">
+          <div class="col-md-6 form-group">
+            <label class="col-form-label">Company Name</label>
+            <input type="text" class="form-control" placeholder="Company Name" id="company_name" name="company_name" required="required">
+            <p id="error_company"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Company Logo</label>
+            <input type="file" class="form-control" placeholder="" name="image" id="image" required="required">
+            <p id="error_file1"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Company Address 1</label>
+            <textarea class="form-control" placeholder="Company Address 1" id="com_address1" rows="3" cols="45" name="com_address1" required="required"></textarea>
+            <p id="error_com_address1"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Company Address 2</label>
+            <textarea class="form-control" placeholder="Company Address 2" id="com_address2" rows="3" cols="45" name="com_address2" ></textarea>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <label class="col-form-label">Company Off Address</label>
+            <textarea class="form-control" placeholder="Company Address" id="com_offAddress" rows="3" cols="45" name="com_offAddress" ></textarea>
+          </div>
+
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Company Number</label>
+            <input type="text" class="form-control" placeholder="Company Number" name="number" id="number" required="required">
+            <p id="error_number"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Mail Id</label>
+            <input type="text" class="form-control" placeholder="Mail Id" name="mail_id" id="mail_id" >
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <label class="col-form-label">Company Account</label>
+            <input type="text" class="form-control" placeholder="Company Account" name="ac" id="ac" required="required">
+            <p id="error_ac"></p>
+          </div>
+
+          <div class="col-md-6 col-sm-6">
+            <label class="col-form-label">Account Holder</label>
+            <input type="text" class="form-control" placeholder="Account Holder" name="ac_holder" id="ac_holder" >
+          </div>
+
+          <div class="col-md-6 col-sm-6">
+            <label class="col-form-label">Bank Name</label>
+            <input type="text" class="form-control" placeholder="" name="bank" id="bank" required="required">
+            <p id="error_bank"></p>
+          </div>
+
+          <div class="col-md-6 col-sm-6">
+            <label class="col-form-label">IFSC Code</label>
+            <input type="text" class="form-control" placeholder="" name="ifsc" id="ifsc" required="required">
+            <p id="error_ifsc"></p>
+          </div>
+
+
+
+
+          <div class="right-w3l col-md-6 contact-form1 form-group">
+            <br></br>
+            <input type="button" id="submit" class="btn btn-primary form-control" value="Submit">
+          </div>
+        </div>
+
+
+        <div id="success" class="text-center" style="color:green;"></div>
+      <div id="error" class="text-center" style="color:red;"></div>
+    </form>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<p class="text-center">
+  <img src="/images/loader.gif" alt="loader" style="width: 150px;height: 120px;" id="loader">
+</p>
+<script src="/js/company.js"></script>
+<
+</body>
+
+</html>

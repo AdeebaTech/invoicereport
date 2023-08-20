@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+  <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="background-color: #f0f1f2">
+<div th:replace="fragments/header :: header"></div>
+
+    <!-- form -->
+    <form id="form" class="container col card p-3 mb-5">
+        <div class="form-row">
+          <div class="col-md-6 form-group">
+            <label class="col-form-label">Product Name</label>
+            <input type="text" class="form-control" placeholder="Product Name" id="name" name="name" required="required">
+            <p id="error_name"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 contact-form1 form-group">
+            <label class="col-form-label">Product Description</label>
+            <textarea class="form-control" placeholder="Product Description" id="description" rows="3" cols="45" name="description" required="required"></textarea>
+            <p id="error_description"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Customer Name</label>
+            <select class="form-control" id="customer_name" name="customer_name"  onChange="check()">
+              <option value="0">select option</option>
+              <option th:each="cusName : ${customerList}"
+                      th:value="${cusName.order_date}" th:text="${cusName.customer_name} "required="required"></option>
+            </select>
+            <p id="error_customer"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Order Date</label>
+            <input type="text" class="form-control"  name="order_date" id="order_date"  >
+
+            <p id="error_orderDate"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Price</label>
+            <input type="number" class="form-control" placeholder="Price" name="price" id="price" required="required">
+            <p id="error_price"></p>
+          </div>
+          <div class="col-md-6 col-sm-6 ">
+            <label class="col-form-label">Package Charge</label>
+            <input type="number" class="form-control" placeholder="Package Charge" name="package_charge" id="package_charge" >
+            <p id="error_packageCharge"></p>
+          </div>
+          <div class="col-md-6 col-sm-6">
+            <label class="col-form-label">Qty</label>
+            <input type="number" class="form-control" placeholder="Qty" name="qty" id="qty" required="required">
+            <p id="error_qty"></p>
+          </div>
+
+
+          <div class="col-md-6 col-sm-6 contact-form1 form-group">
+            <label class="col-form-label">Image</label>
+            <input type="file" class="form-control" placeholder="" name="image" id="image" required="required">
+            <p id="error_file"></p>
+          </div>
+          <div class="right-w3l col-md-6">
+            <input type="button" id="submit" class="btn btn-primary form-control" value="Submit">
+          </div>
+        </div>
+
+
+        <div id="success" class="text-center" style="color:green;"></div>
+      <div id="error" class="text-center" style="color:red;"></div>
+    </form>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<p class="text-center">
+  <img src="/images/loader.gif" alt="loader" style="width: 150px;height: 120px;" id="loader">
+</p>
+<script src="/js/product.js"></script>
+<script>
+ function check() {
+     document.getElementById("order_date").value=document.getElementById("customer_name").value;
+    }
+ </script>
+</body>
+
+</html>
