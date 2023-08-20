@@ -55,7 +55,6 @@
     <thead>
     <tr>
         <th>SR. No.</th>
-        <th>Name</th>
         <th>Item</th>
         <th>Description</th>
         <th>Price</th>
@@ -68,7 +67,6 @@
     <tbody th:with="count=0">
     <tr th:each = "imageGallery, hh : ${images}">
         <td th:with="count=${count + 1}" th:text="${count}"></td>
-        <td th:text="${imageGallery.name}"></td>
         <td><img th:src="@{${'/image/display/'+ imageGallery.id}}"
                  class="card img-fluid" style="width:80px;height: 80px" alt=""/></td>
         <td th:text="${imageGallery.description}"></td>

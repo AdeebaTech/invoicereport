@@ -20,13 +20,13 @@
     <!-- form -->
     <form id="form" class="container col card p-3 mb-5">
         <div class="form-row">
-          <div class="col-md-6 form-group">
-            <label class="col-form-label">Product Name</label>
-            <input type="text" class="form-control" placeholder="Product Name" id="name" name="name" required="required">
-            <p id="error_name"></p>
+          <div class="col-md-6 col-sm-6 contact-form1 form-group">
+            <label class="col-form-label">Item</label>
+            <input type="file" class="form-control" placeholder="" name="image" id="image" required="required">
+            <p id="error_file"></p>
           </div>
           <div class="col-md-6 col-sm-6 contact-form1 form-group">
-            <label class="col-form-label">Product Description</label>
+            <label class="col-form-label">Item Description</label>
             <textarea class="form-control" placeholder="Product Description" id="description" rows="3" cols="45" name="description" required="required"></textarea>
             <p id="error_description"></p>
           </div>
@@ -62,12 +62,9 @@
           </div>
 
 
-          <div class="col-md-6 col-sm-6 contact-form1 form-group">
-            <label class="col-form-label">Image</label>
-            <input type="file" class="form-control" placeholder="" name="image" id="image" required="required">
-            <p id="error_file"></p>
-          </div>
+
           <div class="right-w3l col-md-6">
+            <br></br>
             <input type="button" id="submit" class="btn btn-primary form-control" value="Submit">
           </div>
         </div>

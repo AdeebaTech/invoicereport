@@ -10,4 +10,6 @@ public class CustomerData {
     private String mobile;
     private Integer advance;
     private Integer gst;
+    private String customerBank;
+    private String orderReviverName;
 }

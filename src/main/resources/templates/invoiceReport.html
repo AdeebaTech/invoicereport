@@ -33,14 +33,31 @@
         </div>
 
         <div class="col-md-6 form-group">
-            <label class="col-form-label">Order Date</label>
-            <input type="text" class="form-control"  name="order_date" id="order_date"  >
-
+        <label class="col-form-label">Order Date</label>
+        <input type="text" class="form-control"  name="order_date" id="order_date"  >
        </div>
 
+        <div class="col-md-6 form-group">
+            <label class="col-form-label">Advance Amount</label>
+            <input type="number" th:field="*{advance}" placeholder="Advance Amount" class="form-control"
+                   id="advance"  />
+        </div>
 
-        <div class="text-center">
-            <button type="submit" name="action" value="show">Generate PDF</button>
+        <div class="col-md-6 form-group">
+            <label class="col-form-label">GST</label>
+            <input type="number" th:field="*{gst}" placeholder="GST Amount" class="form-control"
+                   id="gst"  />
+        </div>
+        <div class="col-md-6 form-group">
+            <label class="col-form-label">Order Receiver Name</label>
+            <input type="text" th:field="*{orderReviverName}" placeholder="Order Receiver Name" class="form-control"
+                   id="orderReviverName"  />
+        </div>
+
+
+        <div class="col-md-6 form-group">
+            <br></br>
+            <button  style="color:green;" type="submit" name="action" value="show">Generate PDF</button>
 
 <!--            <input type="submit" value="Show product Details" class="btn btn-primary btn-sm mr-2" />-->
 <!--            <input type="button" value="Generate PDF"  class="btn btn-primary btn-sm mr-2" />-->

@@ -34,13 +34,19 @@ public class GloryService {
     private CustomerInfoRepository customerInfoRepository;
 
     @SuppressWarnings({"rawtypes", "unused"})
-    public byte[] getGloryReport(String cusName,String orderDate, HttpServletResponse response) {
+    public byte[] getGloryReport(String cusName,String orderDate,Integer advance,Integer gst,String orderReceiver, HttpServletResponse response) {
         ByteArrayOutputStream bstream = new ByteArrayOutputStream();
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date order_date = sdf.parse(orderDate);
             Optional<Customer> cusData = customerInfoRepository.findByCustomerNameAndOrderDate(cusName,order_date);
+            if(cusData.isPresent()){
+                Customer dto = cusData.get();
+                dto.setAdvance(advance);
+                dto.setGst(gst);
+                customerInfoRepository.save(dto);
+            }
             Optional<Company> comData = companyRepository.findByCompanyname("Glory Hotel Ware");
             List<ProductDetails> list = fileRepository.findByCustomerNameAndOrderDate(cusName,order_date);
             if(cusData.isPresent() && comData.isPresent() && list.size() > 0){
@@ -51,9 +57,10 @@ public class GloryService {
                 Date date = sdf.parse(sdf.format(new Date()));
                 String currentdate = new SimpleDateFormat("dd/MM/yyyy").format(date);
 
-                Document document = new Document(PageSize.A4, 0, 0, 30, 30);
+                Document document = new Document(PageSize.A4, -20, -20, 40, 40);
+               // document.setMargins(1, 1, 40, 40);
                 PdfWriter pdfWriter = PdfWriter.getInstance(document, bstream);
-                document.setMargins(0, 0, 30, 30);
+               // document.setMargins(20, 20, 30, 30);
                 document.open();
                 document.addCreationDate();
                 Image image = null;
@@ -75,7 +82,19 @@ public class GloryService {
 
                 PdfPCell cell;
 
-                cell = new PdfPCell(new Phrase("ORDER DATE :"+orderDate, font1));
+                cell = new PdfPCell(new Phrase("Order DATE :"+orderDate, font1));
+                cell.setBorder(0);
+                cell.setColspan(25);
+                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setVerticalAlignment(Element.ALIGN_LEFT);
+                img1.addCell(cell);
+                cell = new PdfPCell(new Phrase("Order Delivery DATE :"+currentdate, font1));
+                cell.setBorder(0);
+                cell.setColspan(25);
+                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setVerticalAlignment(Element.ALIGN_LEFT);
+                img1.addCell(cell);
+                cell = new PdfPCell(new Phrase("Order Receiver Name :"+orderReceiver, font1));
                 cell.setBorder(0);
                 cell.setColspan(25);
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -203,14 +222,14 @@ public class GloryService {
                 masterTable.addCell(cell);
 
                 cell = new PdfPCell(new Phrase(cusData.get().getCustomerName(), font));
-                cell.setColspan(15);
+                cell.setColspan(14);
                 cell.setVerticalAlignment(Element.ALIGN_LEFT);
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 cell.setBorder(0);
                 masterTable.addCell(cell);
 
                 cell = new PdfPCell(new Phrase("Mo.No :", font3));
-                cell.setColspan(5);
+                cell.setColspan(6);
                 cell.setVerticalAlignment(Element.ALIGN_LEFT);
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 cell.setBorder(0);
@@ -245,11 +264,33 @@ public class GloryService {
                 masterTable.addCell(cell);
 
                 cell = new PdfPCell(new Phrase(cusData.get().getAddress(), font));
-                cell.setColspan(43);
+                cell.setColspan(14);
                 cell.setVerticalAlignment(Element.ALIGN_LEFT);
                 cell.setHorizontalAlignment(Element.ALIGN_LEFT);
                 cell.setBorder(0);
                 masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Customer Bank Details :", font3));
+                cell.setColspan(6);
+                cell.setVerticalAlignment(Element.ALIGN_LEFT);
+                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setBorder(0);
+                masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(cusData.get().getCustomerBank(), font));
+                cell.setColspan(15);
+                cell.setVerticalAlignment(Element.ALIGN_LEFT);
+                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setBorder(0);
+                masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(" "));
+                cell.setColspan(8);
+                cell.setVerticalAlignment(Element.ALIGN_LEFT);
+                cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+                cell.setBorder(0);
+                masterTable.addCell(cell);
+
 
                 //--------------------- table ---------------------------
 
@@ -262,27 +303,7 @@ public class GloryService {
                 cell.setBorderWidthTop((float) .1);
                 masterTable.addCell(cell);
 
-                cell = new PdfPCell(new Phrase("item", font1));
-                cell.setColspan(10);
-                cell.setRowspan(1);
-                cell.setVerticalAlignment(Element.ALIGN_CENTER);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setBorder(Element.RECTANGLE);
-                cell.setBorderWidthTop((float) .1);
-                cell.setBorderWidthLeft((float) 0);
-                masterTable.addCell(cell);
-
-                cell = new PdfPCell(new Phrase("Description", font1));
-                cell.setColspan(14);
-                cell.setRowspan(1);
-                cell.setVerticalAlignment(Element.ALIGN_CENTER);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setBorder(Element.RECTANGLE);
-                cell.setBorderWidthTop((float) .1);
-                cell.setBorderWidthLeft((float) 0);
-                masterTable.addCell(cell);
-
-                cell = new PdfPCell(new Phrase("price", font1));
+                cell = new PdfPCell(new Phrase("Item", font1));
                 cell.setColspan(8);
                 cell.setRowspan(1);
                 cell.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -292,7 +313,37 @@ public class GloryService {
                 cell.setBorderWidthLeft((float) 0);
                 masterTable.addCell(cell);
 
+                cell = new PdfPCell(new Phrase("Description", font1));
+                cell.setColspan(12);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_CENTER);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) .1);
+                cell.setBorderWidthLeft((float) 0);
+                masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("price", font1));
+                cell.setColspan(6);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_CENTER);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) .1);
+                cell.setBorderWidthLeft((float) 0);
+                masterTable.addCell(cell);
+
                 cell = new PdfPCell(new Phrase("Packing charge", font1));
+                cell.setColspan(6);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_CENTER);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) .1);
+                cell.setBorderWidthLeft((float) 0);
+                masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Packing charge Total", font1));
                 cell.setColspan(6);
                 cell.setRowspan(1);
                 cell.setVerticalAlignment(Element.ALIGN_CENTER);
@@ -323,6 +374,7 @@ public class GloryService {
                 masterTable.addCell(cell);
                 a = a + 1;
                 int total_amount =0;
+                int pakageChargeSum =0;
                 for (int i = 0; i < list.size(); i++) {
                     if(i == 9|| i == 18 || i == 27){
                         document.add(masterTable);
@@ -344,7 +396,7 @@ public class GloryService {
                     img.scaleAbsoluteWidth(80);
 
                     cell = new PdfPCell(img);
-                    cell.setColspan(10);
+                    cell.setColspan(8);
                     cell.setRowspan(1);
                     cell.setVerticalAlignment(Element.ALIGN_CENTER);
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -354,7 +406,7 @@ public class GloryService {
                     masterTable.addCell(cell);
 
                     cell = new PdfPCell(new Phrase(dto.getDescription(), font));
-                    cell.setColspan(14);
+                    cell.setColspan(12);
                     cell.setRowspan(1);
                     cell.setVerticalAlignment(Element.ALIGN_CENTER);
                     cell.setBorder(Element.RECTANGLE);
@@ -363,7 +415,7 @@ public class GloryService {
                     masterTable.addCell(cell);
 
                     cell = new PdfPCell(new Phrase(String.valueOf(dto.getPrice()), font));
-                    cell.setColspan(8);
+                    cell.setColspan(6);
                     cell.setRowspan(1);
                     cell.setVerticalAlignment(Element.ALIGN_CENTER);
                     cell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -381,6 +433,18 @@ public class GloryService {
                     cell.setBorderWidthTop((float) 0);
                     cell.setBorderWidthLeft((float) 0);
                     masterTable.addCell(cell);
+                   int pakageChargeTotal = dto.getPackageCharge() * dto.getQty();
+                    pakageChargeSum = pakageChargeSum + pakageChargeTotal;
+                    cell = new PdfPCell(new Phrase(String.valueOf(pakageChargeTotal), font));
+                    cell.setColspan(6);
+                    cell.setRowspan(1);
+                    cell.setVerticalAlignment(Element.ALIGN_CENTER);
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setBorder(Element.RECTANGLE);
+                    cell.setBorderWidthTop((float) 0);
+                    cell.setBorderWidthLeft((float) 0);
+                    masterTable.addCell(cell);
+
                     cell = new PdfPCell(new Phrase(String.valueOf(dto.getQty()), font));
                     cell.setColspan(3);
                     cell.setRowspan(1);
@@ -390,7 +454,7 @@ public class GloryService {
                     cell.setBorderWidthTop((float) 0);
                     cell.setBorderWidthLeft((float) 0);
                     masterTable.addCell(cell);
-                    int amount = dto.getPrice() * dto.getQty() + dto.getQty() * dto.getPackageCharge();
+                    int amount = dto.getPrice() * dto.getQty();
                     total_amount =amount+total_amount;
                     cell = new PdfPCell(new Phrase(String.valueOf(amount), font));
                     cell.setColspan(6);
@@ -403,7 +467,7 @@ public class GloryService {
                     masterTable.addCell(cell);
                 }
 
-                cell = new PdfPCell(new Phrase("Total Amount", font));
+                cell = new PdfPCell(new Phrase("Amount", font));
                 cell.setColspan(44);
                 cell.setRowspan(1);
                 cell.setVerticalAlignment(Element.ALIGN_RIGHT);
@@ -423,6 +487,27 @@ public class GloryService {
                 cell.setBorderWidthLeft((float) 0);
                 masterTable.addCell(cell);
 
+                cell = new PdfPCell(new Phrase("Packing Charge", font));
+                cell.setColspan(44);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_RIGHT);
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) 0);
+                cell.setBorderWidthLeft((float) .1);
+                masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase(String.valueOf(pakageChargeSum), font));
+                cell.setColspan(6);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_RIGHT);
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) 0);
+                cell.setBorderWidthLeft((float) 0);
+                masterTable.addCell(cell);
+
+
                 cell = new PdfPCell(new Phrase("G.S.T 18%", font));
                 cell.setColspan(44);
                 cell.setRowspan(1);
@@ -434,7 +519,7 @@ public class GloryService {
                 masterTable.addCell(cell);
                 int gst_amount = cusData.get().getGst();
 
-                cell = new PdfPCell(new Phrase(String.valueOf(gst_amount), font));
+                cell = new PdfPCell(new Phrase(String.valueOf(gst), font));
                 cell.setColspan(6);
                 cell.setRowspan(1);
                 cell.setVerticalAlignment(Element.ALIGN_RIGHT);
@@ -443,6 +528,28 @@ public class GloryService {
                 cell.setBorderWidthTop((float) 0);
                 cell.setBorderWidthLeft((float) 0);
                 masterTable.addCell(cell);
+
+                cell = new PdfPCell(new Phrase("Total Amount", font));
+                cell.setColspan(44);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_RIGHT);
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) 0);
+                cell.setBorderWidthLeft((float) .1);
+                masterTable.addCell(cell);
+
+                int totalamount_A_P_G = total_amount+pakageChargeSum+gst;
+                cell = new PdfPCell(new Phrase(String.valueOf(totalamount_A_P_G), font));
+                cell.setColspan(6);
+                cell.setRowspan(1);
+                cell.setVerticalAlignment(Element.ALIGN_RIGHT);
+                cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                cell.setBorder(Element.RECTANGLE);
+                cell.setBorderWidthTop((float) 0);
+                cell.setBorderWidthLeft((float) 0);
+                masterTable.addCell(cell);
+
 
                 cell = new PdfPCell(new Phrase("Advance Amount", font));
                 cell.setColspan(44);
@@ -453,7 +560,7 @@ public class GloryService {
                 cell.setBorderWidthTop((float) 0);
                 cell.setBorderWidthLeft((float) .1);
                 masterTable.addCell(cell);
-                int advance_amount = cusData.get().getAdvance();
+                int advance_amount = advance;
                 cell = new PdfPCell(new Phrase(String.valueOf(advance_amount), font));
                 cell.setColspan(6);
                 cell.setRowspan(1);
@@ -474,7 +581,7 @@ public class GloryService {
                 cell.setBorderWidthLeft((float) .1);
                 masterTable.addCell(cell);
 
-                int balance_amount = total_amount + gst_amount - advance_amount;
+                int balance_amount = totalamount_A_P_G - advance_amount;
 
                 cell = new PdfPCell(new Phrase(String.valueOf(balance_amount), font1));
                 cell.setColspan(6);

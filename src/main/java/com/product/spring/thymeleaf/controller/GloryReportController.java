@@ -48,7 +48,7 @@ public class GloryReportController {
         try {
             String [] name_date = data.getCustomerName().split(" - ");
 
-            invData = gloryService.getGloryReport(name_date[0],name_date[1], response1);
+            invData = gloryService.getGloryReport(name_date[0],name_date[1], data.getAdvance(), data.getGst(),data.getOrderReviverName(),response1);
             response = new ResponseEntity<>(invData, HttpStatus.OK);
             return response;
         } catch (Exception e) {

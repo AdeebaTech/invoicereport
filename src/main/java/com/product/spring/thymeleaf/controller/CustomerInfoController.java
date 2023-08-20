@@ -52,7 +52,7 @@ public class CustomerInfoController {
     Customer customer = new Customer();
     model.addAttribute("tutorial", customer);
     model.addAttribute("pageTitle", "Customer Information");
-    List<Map> list = customerInfoRepository.getCustomerNameAndOrderDate();
+    List<Map> list = customerInfoRepository.concatCustomerNameAndOrderDate();
    // List dateList = customerInfoRepository.orderDate();
     model.addAttribute("customerList",list);
    // model.addAttribute("orderDates",dateList);
@@ -78,8 +78,8 @@ public class CustomerInfoController {
       customer1.setAddress(customer.getAddress());
       customer1.setMobile(customer.getMobile());
       customer1.setOrderDate(date1);
-      customer1.setAdvance(customer.getAdvance());
-      customer1.setGst(customer.getGst());
+      customer1.setCustomerBank(customer.getCustomerBank());
+
 
       customerInfoRepository.save(customer1);
 

@@ -48,7 +48,7 @@ public class ImageGalleryController {
 //	}
 
     @PostMapping("/image/saveImageDetails")
-    public @ResponseBody ResponseEntity<?> createProduct(@RequestParam("name") String name,
+    public @ResponseBody ResponseEntity<?> createProduct(
                                                          @RequestParam("price") int price, @RequestParam("description") String description,
                                                          @RequestParam("customer_name") String customer_name, @RequestParam("package_charge") int package_charge,
                                                          @RequestParam("qty") int qty, @RequestParam("order_date") String orderDate,
@@ -56,8 +56,9 @@ public class ImageGalleryController {
         try {
             String[] cus_name = customer_name.split(",");
             String[] order_date = orderDate.split(",");
+            String [] orderDateAndName = order_date[0].split(" - ");
             SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
-            Date date = formatter1.parse(order_date[0]);
+            Date date = formatter1.parse(orderDateAndName[1]);
 
                 String uploadDirectory = request.getServletContext().getRealPath(uploadFolder);
                 log.info("uploadDirectory:: " + uploadDirectory);
@@ -68,17 +69,15 @@ public class ImageGalleryController {
 //                    model.addAttribute("invalid", "Sorry! Filename contains invalid path sequence \" + fileName");
 //                    return new ResponseEntity<>("Sorry! Filename contains invalid path sequence " + fileName, HttpStatus.BAD_REQUEST);
 //                }
-                String[] names = name.split(",");
                 String[] descriptions = description.split(",");
                 Date createDate = new Date();
                 byte[] imageData = file.getBytes();
                 ProductDetails productDetails = new ProductDetails();
-                productDetails.setName(names[0]);
                 productDetails.setImage(imageData);
                 productDetails.setPrice(price);
                 productDetails.setDescription(descriptions[0]);
                 productDetails.setCreateDate(createDate);
-                productDetails.setCustomerName(cus_name[0].toUpperCase());
+                productDetails.setCustomerName(orderDateAndName[0].toUpperCase());
                 productDetails.setPackageCharge(package_charge);
                 productDetails.setQty(qty);
                 productDetails.setOrderDate(date);
@@ -116,7 +115,6 @@ public class ImageGalleryController {
                 if (imageGallery.isPresent()) {
                     model.addAttribute("id", imageGallery.get().getId());
                     model.addAttribute("description", imageGallery.get().getDescription());
-                    model.addAttribute("name", imageGallery.get().getName());
                     model.addAttribute("price", imageGallery.get().getPrice());
                     return "imagedetails";
                 }

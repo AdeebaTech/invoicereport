@@ -33,5 +33,10 @@ public class Customer {
   @Column(name = "gst",columnDefinition = "integer default 0")
   private Integer gst;
 
+  @Column(name = "customerBank")
+  private String customerBank;
+
+  @Column(name = "orderReviverName")
+  private String orderReviverName;
 
 }

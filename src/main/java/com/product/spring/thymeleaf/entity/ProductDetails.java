@@ -16,10 +16,6 @@ public class ProductDetails {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, unique = true)
 	private Long id;
-	
-	@Column(name = "name", nullable = false)
-	private String name;
-	
 	@Column(name = "description", nullable = false)
 	private String description;	
 	
@@ -52,7 +48,6 @@ public class ProductDetails {
 	public String toString() {
 		return "ImageGallery{" +
 				"id=" + id +
-				", name='" + name + '\'' +
 				", description='" + description + '\'' +
 				", price=" + price +
 				", customerName='" + customerName + '\'' +
